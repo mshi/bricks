@@ -45,12 +45,12 @@ class Ball(pygame.sprite.Sprite):
 
         # left
         if self.x <= BALL_RADIUS:
-            self.bounce(0)
+            self.bounce(180)
             self.x = BALL_RADIUS
 
         # right
         if self.x + BALL_RADIUS >= SCREEN_WIDTH:
-            self.bounce(0)
+            self.bounce(180)
             self.x = SCREEN_WIDTH - BALL_RADIUS
 
         # update image position
@@ -59,3 +59,6 @@ class Ball(pygame.sprite.Sprite):
 
     def draw(self, display):
         display.blit(self.image, self.rect.topleft)
+
+    def getDamage(self):
+        return BALL_DAMAGE

@@ -6,10 +6,11 @@ from constants import *
 
 
 class Brick(pygame.sprite.Sprite):
-    def __init__(self, gridx, gridy, health, img):
+    def __init__(self, gridx, gridy, health, img, points):
         super(Brick, self).__init__()
         self.image = pygame.image.load(img).convert_alpha()
         self.health = health
+        self.points = points
         self.x = gridx
         self.y = gridy
         self.realx = GRID_PADDING_X + self.x * (BRICK_WIDTH + BRICK_SPACER)
@@ -19,12 +20,16 @@ class Brick(pygame.sprite.Sprite):
 
     # handle collision if still health
     def collision(self, obj):
-        return (self.health != 0 and pygame.sprite.collide_rect(self, obj))
+        if self.health != 0 and pygame.sprite.collide_rect(self, obj):
+            self.health -= obj.getDamage()
+            return {"collided": True, "points": self.points}
+        else:
+            return {"collided": False}
 
     @staticmethod
     def CreateBrick(gridx, gridy, power):
         if power >= MIN_BRICK_POWER and power <= MAX_BRICK_POWER:
-            return Brick(gridx, gridy, BRICKS[power]["health"], BRICKS[power]["image"])
+            return Brick(gridx, gridy, BRICKS[power]["health"], BRICKS[power]["image"], BRICKS[power]["points"])
         else:
             raise NotImplementedError("Brick power level, " + power + ", not implemented")
 

@@ -31,9 +31,10 @@ class Game:
         self.grid = [[None for i in xrange(GRID_WIDTH)] for j in xrange(GRID_HEIGHT)]
         self.running = False
         self.state = STATES["IDLE"]
+        self.points = 0
 
     # returns list of all elements in grid that are non-empty
-    def bricks(self):
+    def objects(self):
         ret = []
         for i in xrange(len(self.grid)):
             ret += filter(lambda x: x is not None, self.grid[i])
@@ -75,12 +76,23 @@ class Game:
                 if self.player.move(PLAYER_SPEED) and self.state == STATES["IDLE"]:
                     self.ball.move(PLAYER_SPEED, 0)
 
+    def updateState(self):
+        if self.state == STATES["STARTED"]:  # started state - ball is moving
+            self.ball.update()
+            # check collision with blocks
+            for obj in self.objects():
+                result = obj.collision(self.ball)
+                if result["collided"]:
+                    self.points += result["points"]
+                    self.ball.bounce(0)
+
+
     def drawSprites(self):
         self.display.fill(WHITE)
         self.player.draw(self.display)
         self.ball.draw(self.display)
-        for brick in self.bricks():
-            brick.draw(self.display)
+        for obj in self.objects():
+            obj.draw(self.display)
 
     # main game loop
     def loop(self):
@@ -89,6 +101,7 @@ class Game:
             for event in pygame.event.get():
                 self.handleEvents(event)
             self.handleKeyInput()
+            self.updateState()
             self.drawSprites()
             pygame.display.update()
 

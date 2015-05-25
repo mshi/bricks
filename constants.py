@@ -31,27 +31,33 @@ IMAGE_PLAYER = "images/platform.png"
 BRICKS = [
     {
         "image": "images/bricks/grey.png",
-        "health": -1
+        "health": -1,
+        "points": 0
     },
     {
         "image": "images/bricks/cyan.png",
-        "health": 1
+        "health": 1,
+        "points": 10
     },
     {
         "image": "images/bricks/red.png",
-        "health": 2
+        "health": 2,
+        "points": 20
     },
     {
         "image": "images/bricks/green.png",
-        "health": 3
+        "health": 3,
+        "points": 40
     },
     {
         "image": "images/bricks/yellow.png",
-        "health": 4
+        "health": 4,
+        "points": 60
     },
     {
         "image": "images/bricks/blue.png",
-        "health": 5
+        "health": 5,
+        "points": 100
     },
 ]
 
@@ -59,10 +65,11 @@ MIN_BRICK_POWER = 0
 MAX_BRICK_POWER = 5
 
 BRICK_RANDOM_CHANCE = 10
+BALL_DAMAGE = 1
 
 # parameters
 BALL_INITIAL_VELOCITY = 10  # velocity in pixels/refresh
-BALL_INITIAL_DIRECTION = 90  # start at 90 degrees
+BALL_INITIAL_DIRECTION = 0  # start at 0 degrees
 
 PLAYER_SPEED = 10  # 10 pixels/refresh
 
