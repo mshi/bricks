@@ -4,6 +4,7 @@
 # Colours
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+ALPHA_MAX = 255
 
 # Dimensions (in pixels)
 SCREEN_WIDTH = 800

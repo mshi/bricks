@@ -8,8 +8,9 @@ from constants import *
 class Brick(pygame.sprite.Sprite):
     def __init__(self, gridx, gridy, health, img, points):
         super(Brick, self).__init__()
-        self.image = pygame.image.load(img).convert_alpha()
+        self.image = pygame.image.load(img).convert()  # use without alpha values
         self.health = health
+        self.max_health = health
         self.points = points
         self.x = gridx
         self.y = gridy
@@ -22,6 +23,9 @@ class Brick(pygame.sprite.Sprite):
     def collision(self, obj):
         if self.health != 0 and pygame.sprite.collide_rect(self, obj):
             self.health -= obj.getDamage()
+            percentageHealth = float(self.health) / self.max_health
+            print "Health percent: " + str(percentageHealth)
+            self.image.set_alpha(ALPHA_MAX * percentageHealth)
             return {"collided": True, "points": self.points}
         else:
             return {"collided": False}
