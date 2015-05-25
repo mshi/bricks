@@ -85,7 +85,12 @@ class Game:
                 if result["collided"]:
                     self.points += result["points"]
                     self.ball.bounce(0)
-
+            # check collision with platform
+            if self.player.collision(self.ball):
+                angleDiff = self.player.angleDiff(self.ball)
+                self.ball.bounce(angleDiff)
+                # print "Angle: " + str(angleDiff)
+            # print self.points
 
     def drawSprites(self):
         self.display.fill(WHITE)

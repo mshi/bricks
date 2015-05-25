@@ -37,3 +37,9 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self, display):
         display.blit(self.image, self.rect.topleft)
+
+    def collision(self, obj):
+        return pygame.sprite.collide_rect(self, obj)
+
+    def angleDiff(self, obj):
+        return (self.rect.left + PLATFORM_WIDTH/2) - (obj.rect.left + obj.rect.width/2)
