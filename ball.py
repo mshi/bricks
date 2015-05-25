@@ -23,6 +23,9 @@ class Ball(pygame.sprite.Sprite):
     def move(self, delta_x, delta_y):
         self.x += delta_x
         self.y += delta_y
+        # update image position
+        self.rect.centerx = self.x
+        self.rect.centery = self.y
 
     def update(self):
 

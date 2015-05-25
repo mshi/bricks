@@ -22,7 +22,10 @@ class Player(pygame.sprite.Sprite):
 
     def move(self, delta):
         oldPos = self.posX()  # store old position to compare if it moved
+        print "Old pos: " + str(oldPos)
         self.update(self.posX() + delta)
+        print "New pos: " + str(self.posX())
+        print oldPos != self.posX()
         return oldPos != self.posX()
 
     def posX(self):

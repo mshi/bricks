@@ -30,7 +30,7 @@ class Game:
 
         self.grid = [[None for i in xrange(GRID_WIDTH)] for j in xrange(GRID_HEIGHT)]
         self.running = False
-        self.state = STATES["MENU"]
+        self.state = STATES["IDLE"]
 
     # returns list of all elements in grid that are non-empty
     def bricks(self):
