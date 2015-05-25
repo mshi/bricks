@@ -65,6 +65,16 @@ class Game:
             elif event.key == K_SPACE:
                 self.state = STATES["STARTED"]
 
+    def handleKeyInput(self):
+        pressed = pygame.key.get_pressed()
+        if self.state == STATES["STARTED"] or self.state == STATES["IDLE"]:
+            if pressed[K_LEFT]:
+                if self.player.move(-PLAYER_SPEED) and self.state == STATES["IDLE"]:
+                    self.ball.move(-PLAYER_SPEED, 0)
+            if pressed[K_RIGHT]:
+                if self.player.move(PLAYER_SPEED) and self.state == STATES["IDLE"]:
+                    self.ball.move(PLAYER_SPEED, 0)
+
     def drawSprites(self):
         self.display.fill(WHITE)
         self.player.draw(self.display)
@@ -78,6 +88,7 @@ class Game:
             self.clock.tick(FPS)
             for event in pygame.event.get():
                 self.handleEvents(event)
+            self.handleKeyInput()
             self.drawSprites()
             pygame.display.update()
 

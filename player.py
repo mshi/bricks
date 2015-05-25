@@ -20,8 +20,14 @@ class Player(pygame.sprite.Sprite):
         if self.rect.right > SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH
 
+    def move(self, delta):
+        oldPos = self.posX()  # store old position to compare if it moved
+        self.update(self.posX() + delta)
+        return oldPos != self.posX()
+
     def posX(self):
-        return self.rect.left + PLATFORM_WIDTH/2
+        # return self.rect.left + PLATFORM_WIDTH/2
+        return self.rect.centerx
 
     def posY(self):
         return SCREEN_HEIGHT - PLATFORM_HEIGHT

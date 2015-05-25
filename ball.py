@@ -20,6 +20,10 @@ class Ball(pygame.sprite.Sprite):
     def bounce(self, difference):
         self.direction = (180 - self.direction - difference) % 360
 
+    def move(self, delta_x, delta_y):
+        self.x += delta_x
+        self.y += delta_y
+
     def update(self):
 
         # convert to use radians, requirement of cos, sin

@@ -64,6 +64,8 @@ BRICK_RANDOM_CHANCE = 10
 BALL_INITIAL_VELOCITY = 10  # velocity in pixels/refresh
 BALL_INITIAL_DIRECTION = 90  # start at 90 degrees
 
+PLAYER_SPEED = 10  # 10 pixels/refresh
+
 VERSION = "1.0"
 NAME = "BrickBreaker"
 FPS = 60  # 60 frames per second
