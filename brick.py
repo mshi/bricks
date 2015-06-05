@@ -26,7 +26,7 @@ class Brick(pygame.sprite.Sprite):
             percentageHealth = float(self.health) / self.max_health
             print "Health percent: " + str(percentageHealth)
             self.image.set_alpha(ALPHA_MAX * percentageHealth)
-            return {"collided": True, "points": self.points}
+            return {"collided": True, "points": int(float(self.points)/self.max_health)}
         else:
             return {"collided": False}
 

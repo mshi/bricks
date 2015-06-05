@@ -28,6 +28,7 @@ GRID_PADDING_Y = (SCREEN_HEIGHT - GRID_HEIGHT * (BRICK_HEIGHT + BRICK_HEIGHT)) /
 # Resource paths
 IMAGE_BALL = "images/ball.png"
 IMAGE_PLAYER = "images/platform.png"
+IMAGE_BACKGROUND = "images/background.jpg"
 
 BRICKS = [
     {

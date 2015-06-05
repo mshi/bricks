@@ -6,6 +6,7 @@ from ball import Ball
 from brick import Brick
 from player import Player
 from constants import *
+from menu import Menu
 
 # This is main entry point of the game
 
@@ -31,6 +32,11 @@ class Game:
         self.running = False
         self.state = STATES["IDLE"]
         self.points = 0
+        self.background = pygame.image.load(IMAGE_BACKGROUND).convert_alpha()
+        self.font = pygame.font.Font(None, 36)
+        self.smallFont = pygame.font.Font(None, 16)
+        self.largeFont = pygame.font.Font(None, 64)
+        self.mouseMode = False
 
     # returns list of all elements in grid that are non-empty
     def objects(self):
@@ -57,6 +63,7 @@ class Game:
             self.running = False
         elif event.type == MOUSEBUTTONDOWN:
             self.state = STATES["STARTED"]
+            self.mouseMode = True
         elif event.type == KEYDOWN:
             # handle keyboard inputs
             if event.key == K_ESCAPE:
@@ -78,6 +85,9 @@ class Game:
     def updateState(self):
         if self.state == STATES["STARTED"]:  # started state - ball is moving
             self.ball.update()
+            if (self.ball.y >= SCREEN_HEIGHT - BALL_RADIUS*2):
+                # game over
+                self.gameover()
             # check collision with blocks
             for obj in self.objects():
                 result = obj.collision(self.ball)
@@ -91,12 +101,32 @@ class Game:
                 # print "Angle: " + str(angleDiff)
             # print self.points
 
+    def handleMouse(self):
+        self.player.update(pygame.mouse.get_pos()[0])
+
     def drawSprites(self):
-        self.display.fill(WHITE)
+        self.display.fill(BLACK)
         self.player.draw(self.display)
         self.ball.draw(self.display)
         for obj in self.objects():
             obj.draw(self.display)
+
+    def drawScore(self):
+        text = self.smallFont.render("Score: " + str(self.points), True, WHITE)
+        self.display.blit(text, [10, 5])
+
+    def gameover(self):
+        display = True
+        self.state = STATES["GAMEOVER"]
+        self.running = False
+        self.display.blit(self.background, (0, 0))
+        text = self.largeFont.render("GAME OVER", True, WHITE)
+        self.display.blit(text, [60, 60])
+        pygame.display.flip()
+        while display:
+            e = pygame.event.wait()
+            if e.type == pygame.MOUSEBUTTONDOWN or e.type == pygame.KEYDOWN:
+                display = False
 
     # main game loop
     def loop(self):
@@ -104,9 +134,13 @@ class Game:
             self.clock.tick(FPS)
             for event in pygame.event.get():
                 self.handleEvents(event)
-            self.handleKeyInput()
+            if self.mouseMode:
+                self.handleMouse()
+            else:
+                self.handleKeyInput()
             self.updateState()
             self.drawSprites()
+            self.drawScore()
             pygame.display.update()
 
     # start game method
@@ -115,7 +149,58 @@ class Game:
         self.running = True
         self.loop()
 
+    def instructions(self):
+        display_instructions = True
+        page = 1
+        while display_instructions:
+            # Get the next event
+            e = pygame.event.wait()
+
+            if e.type == pygame.QUIT:
+                display_instructions = False
+            elif e.type == pygame.MOUSEBUTTONDOWN or e.type == pygame.KEYDOWN:
+                page += 1
+                if page == 3:
+                    display_instructions = False
+
+            self.display.blit(self.background, (0, 0))
+
+            if page == 1:
+                # Draw instructions, page 1
+                text = self.font.render("Instructions", True, WHITE)
+                self.display.blit(text, [10, 10])
+
+                text = self.font.render("Page 1", True, WHITE)
+                self.display.blit(text, [10, 40])
+
+                text = self.font.render("Welcome to break the bricks", True, WHITE)
+                self.display.blit(text, [200, 60])
+
+            if page == 2:
+                # Draw instructions, page 2
+                text = self.font.render("This game is about breaking bricks", True, WHITE)
+                self.display.blit(text, [10, 10])
+
+                text = self.font.render("Page 2", True, WHITE)
+                self.display.blit(text, [10, 40])
+
+                text = self.font.render("Use your arrow keys to control the board", True, WHITE)
+                self.display.blit(text, [125, 100])
+
+                text = self.font.render("Prevent the ball from falling down", True, WHITE)
+                self.display.blit(text, [100, 140])
+
+                text = self.font.render("Different bricks require different number of hits to break", True, WHITE)
+                self.display.blit(text, [100, 180])
+
+                text = self.font.render("They are worth different point value as well", True, WHITE)
+                self.display.blit(text, [1250, 220])
+
+            # Update the screen
+            pygame.display.flip()
+
 game = Game()
 
+game.instructions()
 game.start()
 pygame.display.quit()
