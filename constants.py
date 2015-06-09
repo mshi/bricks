@@ -34,6 +34,7 @@ SOUND_PLAYER_COLLIDE = "sounds/pong-f5.wav"
 SOUND_BRICK_COLLIDE = "sounds/pong-f4.wav"
 SOUND_GAME_OVER = "sounds/gameover.wav"
 SOUND_GAME_START = "sounds/gamestart.ogg"
+SOUND_WIN = "sounds/win.wav"
 
 BRICKS = [
     {

@@ -22,6 +22,7 @@ class Game:
         self.sound_brick_collide = pygame.mixer.Sound(SOUND_BRICK_COLLIDE)
         self.sound_start = pygame.mixer.Sound(SOUND_GAME_START)
         self.sound_gameover = pygame.mixer.Sound(SOUND_GAME_OVER)
+        self.sound_win = pygame.mixer.Sound(SOUND_WIN)
 
         self.display = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
         pygame.display.set_caption(NAME + " v" + VERSION)
@@ -92,13 +93,18 @@ class Game:
             if (self.ball.y >= SCREEN_HEIGHT - BALL_RADIUS*2):
                 # game over
                 self.gameover()
-            # check collision with blocks
+            # check collision with blocks and if any left
+            blocksLeft = False
             for obj in self.objects():
+                if obj.getHealth() != 0 and not blocksLeft:
+                    blocksLeft = True
                 result = obj.collision(self.ball)
                 if result["collided"]:
                     self.sound_brick_collide.play()
                     self.points += result["points"]
                     self.ball.bounce(0)
+            if not blocksLeft:
+                self.win()
             # check collision with platform
             if self.player.collision(self.ball):
                 self.sound_player_collide.play()
@@ -128,6 +134,20 @@ class Game:
         self.running = False
         self.display.blit(self.background, (0, 0))
         text = self.largeFont.render("GAME OVER", True, WHITE)
+        self.display.blit(text, [60, 60])
+        pygame.display.flip()
+        while display:
+            e = pygame.event.wait()
+            if e.type == pygame.MOUSEBUTTONDOWN or e.type == pygame.KEYDOWN:
+                display = False
+
+    def win(self):
+        self.sound_win.play()
+        display = True
+        self.state = STATES["GAMEOVER"]
+        self.running = False
+        self.display.blit(self.background, (0, 0))
+        text = self.largeFont.render("You have won", True, WHITE)
         self.display.blit(text, [60, 60])
         pygame.display.flip()
         while display:

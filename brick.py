@@ -40,3 +40,6 @@ class Brick(pygame.sprite.Sprite):
     def draw(self, display):
         if self.health != 0:
             display.blit(self.image, self.rect.topleft)
+
+    def getHealth(self):
+        return self.health
