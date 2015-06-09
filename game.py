@@ -18,6 +18,10 @@ class Game:
         # initialize pygame stuff
         pygame.init()
         pygame.mixer.init()
+        self.sound_player_collide = pygame.mixer.Sound(SOUND_PLAYER_COLLIDE)
+        self.sound_brick_collide = pygame.mixer.Sound(SOUND_BRICK_COLLIDE)
+        self.sound_start = pygame.mixer.Sound(SOUND_GAME_START)
+        self.sound_gameover = pygame.mixer.Sound(SOUND_GAME_OVER)
 
         self.display = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
         pygame.display.set_caption(NAME + " v" + VERSION)
@@ -92,10 +96,12 @@ class Game:
             for obj in self.objects():
                 result = obj.collision(self.ball)
                 if result["collided"]:
+                    self.sound_brick_collide.play()
                     self.points += result["points"]
                     self.ball.bounce(0)
             # check collision with platform
             if self.player.collision(self.ball):
+                self.sound_player_collide.play()
                 angleDiff = self.player.angleDiff(self.ball)
                 self.ball.bounce(angleDiff)
                 # print "Angle: " + str(angleDiff)
@@ -116,6 +122,7 @@ class Game:
         self.display.blit(text, [10, 5])
 
     def gameover(self):
+        self.sound_gameover.play()
         display = True
         self.state = STATES["GAMEOVER"]
         self.running = False
@@ -147,6 +154,7 @@ class Game:
     def start(self):
         self.generateStage()
         self.running = True
+        self.sound_start.play()
         self.loop()
 
     def instructions(self):
